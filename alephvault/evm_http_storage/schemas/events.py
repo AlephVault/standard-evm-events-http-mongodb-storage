@@ -42,7 +42,8 @@ EVENT = {
     }
 }
 
-EVENT_SETTINGS = {
+
+EVENTS_SETTINGS = {
     "type": "dict",
     "keysrules": {
         "type": "string",
