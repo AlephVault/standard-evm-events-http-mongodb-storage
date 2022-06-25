@@ -2,6 +2,12 @@ from pymongo import MongoClient
 
 
 def _tohex(value: int):
+    """
+    Normalizes an integer value to its hexadecimal representation.
+    :param value: The value to normalize to hex.
+    :return: The normalized hexadecimal value.
+    """
+
     h = hex(value)[2:]
     return "0x" + ("0" * max(0, 64 - len(h))) + h
 
