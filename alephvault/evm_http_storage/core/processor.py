@@ -30,7 +30,7 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
       occurred in the processing.
     """
 
-    processed_events = []
+    all_processed_events = []
 
     try:
         with client.start_session() as session:
@@ -64,14 +64,15 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
                     #   the event address, the ABI, and the name of the
                     #   event we're interested in retrieving).
                     events = sorted(events_list[blockNumber], key=lambda evt: (evt['transactionIndex', 'logIndex']))
+                    processed_events = []
                     for event in events:
                         handler = events_settings[event['eventKey']]
-                        handler(client, session, event)
+                        processed_events.append(handler(client, session, event))
                     # Update and store the states.
                     state[event['eventKey']] = _tohex(blockNumber)
                     state_collection.replace_one({}, {"value": state}, session=session)
                     # Update response.
-                    processed_events.extend(events)
-        return processed_events, None
+                    all_processed_events.extend(processed_events)
+        return all_processed_events, None
     except Exception as e:
-        return processed_events, e
+        return all_processed_events, e
