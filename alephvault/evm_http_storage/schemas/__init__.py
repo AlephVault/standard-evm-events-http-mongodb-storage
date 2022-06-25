@@ -1,4 +1,5 @@
 from .events import EVENTS_SETTINGS
+from .resources import make_evm_resource
 
 
 # This schema is meant for the worker loop. It will be
