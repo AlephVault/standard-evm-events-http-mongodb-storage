@@ -1,7 +1,8 @@
 from .events import EVENTS_SETTINGS
 
 
-# This schema is meant for the worker loop
+# This schema is meant for the worker loop. It will be
+# validated with the WorkerSettingsValidator class.
 WORKER_SCHEMA = {
     "events": EVENTS_SETTINGS,
     "gateway_url_environment_var": {

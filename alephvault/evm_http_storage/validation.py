@@ -2,7 +2,7 @@ from cerberus import Validator, TypeDefinition
 from alephvault.evm_http_storage.core.event_handler import EventHandler
 
 
-class EventSettingsValidator(Validator):
+class WorkerSettingsValidator(Validator):
     """
     This validator is NOT used in the context of the web application,
     but instead in the context of the settings that will be used for
