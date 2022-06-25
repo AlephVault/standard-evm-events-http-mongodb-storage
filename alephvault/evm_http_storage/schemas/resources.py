@@ -1,4 +1,4 @@
-def make_evm_resource(db_name: str, state_collection_name: str,
+def make_evm_resource(db_name: str = 'evm', state_collection_name: str = 'state',
                       state_resource_name: str = "evm-state"):
     """
     Makes a dictionary holding a single resource. This dictionary
@@ -10,7 +10,7 @@ def make_evm_resource(db_name: str, state_collection_name: str,
       to use for the state resource. It must satisfy the Remote
       Storage's rules for the MongoDB identifiers.
     :param state_resource_name: The name for the state resource.
-    :return: A dictionary with the site.
+    :return: A dictionary with the resource configuration.
     """
 
     return {
