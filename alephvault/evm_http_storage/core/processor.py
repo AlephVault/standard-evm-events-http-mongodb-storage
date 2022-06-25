@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pymongo.collection import Collection
 
 
 def _tohex(value: int):
@@ -13,7 +14,7 @@ def _tohex(value: int):
 
 
 def process_full_events_list(events_list: dict, events_settings: dict, client: MongoClient,
-                             cache_db: str, cache_state_collection: str, state: dict):
+                             state_collection: Collection, state: dict):
     """
     Processes all the events in the incoming list. This is done according
     to a given current state (and state collection), its state collection
@@ -22,16 +23,13 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
     :param events_list: The list of events to process. This is actually a dictionary.
     :param events_settings: A dictionary with the per-event settings.
     :param client: A MongoDB client.
-    :param cache_db: The database name, related to the given client, that stores all
-      these cache settings.
-    :param cache_state_collection: The collection, related to the given client and db,
-      that stores the state. Only one single entry should exist there.
+    :param state_collection: A collection, related to the client, into which
+      the state will be saved.
     :param state: The current state, which is periodically updated and pushed.
     :return: The events that were effectively synchronized, and whether an exception
       occurred in the processing.
     """
 
-    state_collection = client[cache_db][cache_state_collection]
     processed_events = []
 
     try:
