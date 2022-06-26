@@ -66,7 +66,7 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
                     events = sorted(events_list[blockNumber], key=lambda evt: (evt['transactionIndex', 'logIndex']))
                     processed_events = []
                     for event in events:
-                        handler = events_settings[event['eventKey']]
+                        handler = events_settings[event['eventKey']]["handler"]
                         processed_events.append(handler(client, session, event))
                     # Update and store the states.
                     state[event['eventKey']] = _tohex(blockNumber)
