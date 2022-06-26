@@ -10,6 +10,20 @@ class EventHandler:
     a session (within that client), and an event to process.
     """
 
+    def _get_arg(self, args, key):
+        """
+        Gets an argument from the args, by trying both `{key}` and `_{key}`
+        as the key to test.
+        :param args: The args to get an argument from
+        :param key:
+        :return:
+        """
+
+        if key in args:
+            return args[key]
+        else:
+            return args.get("_" + key)
+
     def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict):
         """
         Processes an event inside a transaction. That transaction exists in a session,
