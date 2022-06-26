@@ -50,6 +50,7 @@ EVENT = {
 
 EVENTS_SETTINGS = {
     "type": "dict",
+    "empty": False,
     "keysrules": {
         "type": "string",
         "regex": "[a-zA-Z][a-zA-Z0-9_-]+"
