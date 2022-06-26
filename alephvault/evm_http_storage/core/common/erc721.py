@@ -32,6 +32,9 @@ class ERC721BalanceHandler(EventHandler):
         token_id = str(self._get_arg(args, 'tokenId') or 0)
         collection = client[self._db_name][self._erc721balance_collection_name]
 
+        if event["event"] != "Transfer":
+            return {"contract-key": self._contract_key, "from": from_, "to": to, "unknown_event": True}
+
         response = {"contract-key": self._contract_key, "from": from_, "to": to, "tokenId": token_id}
         if not self._is_zero(from_):
             collection.delete_one({
