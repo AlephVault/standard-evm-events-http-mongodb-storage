@@ -1,8 +1,14 @@
-def make_evm_resource(db_name: str = 'evm', state_collection_name: str = 'state',
+from alephvault.evm_http_storage.methods import EventGrabberWorker
+
+
+def make_evm_resource(events_settings: dict, db_name: str = 'evm',
+                      state_collection_name: str = 'state',
                       state_resource_name: str = "evm-state"):
     """
     Makes a dictionary holding a single resource. This dictionary
     will be validated using the Remote Storage's mongodb validator.
+    :param events_settings: The settings that define the events
+      that will be fetched on a work loop.
     :param db_name: The name of the DB to use for the state
       resource. It must satisfy the Remote Storage's rules
       for the MongoDB identifiers.
@@ -19,6 +25,12 @@ def make_evm_resource(db_name: str = 'evm', state_collection_name: str = 'state'
             "collection": state_collection_name,
             "type": "simple",
             "verbs": ["read"],
+            "methods": {
+                "grab": {
+                    "type": "operation",
+                    "handler": EventGrabberWorker(events_settings)
+                }
+            },
             "schema": {
                 "value": {
                     "type": "dict",
