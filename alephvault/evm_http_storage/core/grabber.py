@@ -16,7 +16,7 @@ def grab_all_events_since(gateway_url: str, events_settings: dict, state: dict):
     for event_key, event_settings in events_settings.items():
         contract = client.eth.contract(web3.Web3.toChecksumAddress(event_settings['address']),
                                        abi=json.dumps(event_settings['abi']))
-        event_filter = getattr(contract.events, events_settings['event']).createFilter(
+        event_filter = getattr(contract.events, event_settings['event']).createFilter(
             fromBlock=state.get(event_key, '0x0')
         )
         for event in event_filter.get_all_entries():
