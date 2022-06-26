@@ -27,7 +27,7 @@ EVENT = {
                 "name": {
                     "type": "string",
                     "required": True,
-                    "regex": "[a-z][A-Z0-9_]+"
+                    "regex": "[a-zA-Z][a-zA-Z0-9_]+"
                 },
                 "type": {
                     "type": "string",
@@ -35,6 +35,11 @@ EVENT = {
                 },
             }
         }
+    },
+    "event": {
+        "type": "string",
+        "required": True,
+        "regex": "[a-zA-Z][A-Z0-9_]+"
     },
     "handler": {
         "type": "event-handler",
