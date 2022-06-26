@@ -32,7 +32,7 @@ class ERC20BalanceHandler(EventHandler):
         value = self._get_arg(args, 'value')
         collection = client[self._db_name][self._erc20balance_collection_name]
 
-        response = {"from": from_, "to": to, "value": value}
+        response = {"contract-key": self._contract_key, "from": from_, "to": to, "value": str(value)}
         if not self._is_zero(from_):
             from_entry = collection.find_one({
                 "contract-key": self._contract_key,
