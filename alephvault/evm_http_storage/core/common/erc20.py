@@ -43,15 +43,16 @@ class ERC20BalanceHandler(EventHandler):
             }, session=session) or {}
             from_balance = int(from_entry.get('amount') or '0')
             from_balance -= value
+            from_balance_str = str(from_balance)
             collection.replace_one({
                 "contract-key": self._contract_key,
                 "owner": from_
             }, {
                 "contract-key": self._contract_key,
                 "owner": from_,
-                "amount": str(from_balance)
+                "amount": from_balance_str
             }, session=session, upsert=True)
-            response["from_balance"] = from_balance
+            response["from_balance"] = from_balance_str
         if not self._is_zero(to):
             to_entry = collection.find_one({
                 "contract-key": self._contract_key,
@@ -59,13 +60,14 @@ class ERC20BalanceHandler(EventHandler):
             }, session=session) or {}
             to_balance = int(to_entry.get('amount') or '0')
             to_balance += value
+            to_balance_str = str(to_balance)
             collection.replace_one({
                 "contract-key": self._contract_key,
                 "owner": to
             }, {
                 "contract-key": self._contract_key,
                 "owner": to,
-                "amount": str(to_balance)
+                "amount": to_balance_str
             }, session=session, upsert=True)
-            response["to_balance"] = to_balance
+            response["to_balance"] = to_balance_str
         return response
