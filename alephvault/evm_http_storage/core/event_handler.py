@@ -10,6 +10,28 @@ class EventHandler:
     a session (within that client), and an event to process.
     """
 
+    def _is_zero(self, value):
+        """
+        Tests whether a value is a numeric 0 or 0.0, or perhaps
+        a string representation of a 0 numeric value in any base.
+        :param value: The value to test.
+        :return: Whether it is zero or not.
+        """
+
+        if value == 0:
+            return True
+
+        for b in range(2, 37):
+            try:
+                if int(value, b) == 0:
+                    return True
+                else:
+                    break
+            except:
+                pass
+
+        return False
+
     def _get_arg(self, args, key):
         """
         Gets an argument from the args, by trying both `{key}` and `_{key}`
