@@ -1,6 +1,5 @@
 from cerberus import Validator, TypeDefinition
 from alephvault.evm_http_storage.core.event_handler import EventHandler
-from alephvault.evm_http_storage.schemas.events import WORKER_SCHEMA
 
 
 class WorkerSettingsValidator(Validator):
@@ -16,6 +15,3 @@ class WorkerSettingsValidator(Validator):
         **Validator.types_mapping,
         "event-handler": TypeDefinition("event-handler", (EventHandler,), ())
     }
-
-    def __init__(self):
-        super().__init__(WORKER_SCHEMA)

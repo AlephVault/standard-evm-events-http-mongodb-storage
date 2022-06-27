@@ -2,6 +2,7 @@ import os
 import logging
 from flask import jsonify
 from alephvault.evm_http_storage.core import loop
+from alephvault.evm_http_storage.schemas.events import WORKER_SCHEMA
 from alephvault.evm_http_storage.validation import WorkerSettingsValidator
 from alephvault.http_storage.types.method_handlers import MethodHandler
 from pymongo import MongoClient
@@ -23,7 +24,7 @@ class EventGrabberWorker(MethodHandler):
         :param grabber_settings: The events settings to use.
         """
 
-        validator = WorkerSettingsValidator()
+        validator = WorkerSettingsValidator(WORKER_SCHEMA)
         valid = validator.validate(grabber_settings)
         if not valid:
             raise ValueError(validator.errors)
