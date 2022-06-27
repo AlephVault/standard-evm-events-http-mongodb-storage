@@ -63,7 +63,7 @@ class ERC1155BalanceHandler(EventHandler):
         :return: A response that tells the cache updates and event details.
         """
 
-        response = {"contract-key": self._contract_key, "from": from_, "to": to}
+        response = {"contract-key": self._contract_key, "from": from_, "to": to, "token": id_}
 
         if not self._is_zero(from_):
             from_entry = collection.find_one({
