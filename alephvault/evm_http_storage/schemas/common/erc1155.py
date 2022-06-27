@@ -40,7 +40,7 @@ def make_evm_erc1155_balance_resource(db_name: str = 'evm', erc1155balance_colle
                     "fields": ["contract-key", "token", "owner"]
                 },
                 "owned-list": {
-                    "field": ["contract-key", "owner"]
+                    "fields": ["contract-key", "owner"]
                 }
             }
         }

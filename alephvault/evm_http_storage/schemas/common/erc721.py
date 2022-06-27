@@ -34,7 +34,7 @@ def make_evm_erc721_balance_resource(db_name: str = 'evm', erc721balance_collect
                     "fields": ["contract-key", "token"]
                 },
                 "owned-list": {
-                    "field": ["contract-key", "owner"]
+                    "fields": ["contract-key", "owner"]
                 }
             }
         }
