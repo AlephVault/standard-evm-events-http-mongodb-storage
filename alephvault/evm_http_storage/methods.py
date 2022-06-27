@@ -47,6 +47,6 @@ class EventGrabberWorker(MethodHandler):
                                 client=client, cache_db=db, cache_state_collection=collection)
         if error:
             LOGGER.error(f"An error occurred while running the loop: {type(error).__name__} -> {error}")
-            return jsonify(processed), 200
-        else:
             return jsonify(processed), 500
+        else:
+            return jsonify(processed), 200
