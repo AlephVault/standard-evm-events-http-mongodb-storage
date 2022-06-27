@@ -1,5 +1,10 @@
+import logging
+
 from pymongo import MongoClient
 from pymongo.collection import Collection
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _tohex(value: int):
@@ -63,7 +68,8 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
                     #   registered events (which are a combination of
                     #   the event address, the ABI, and the name of the
                     #   event we're interested in retrieving).
-                    events = sorted(events_list[blockNumber], key=lambda evt: (evt['transactionIndex', 'logIndex']))
+                    events = sorted(events_list[blockNumber],
+                                    key=lambda evt: (evt['transactionIndex'], evt['logIndex']))
                     processed_events = []
                     for event in events:
                         handler = events_settings[event['eventKey']]["handler"]
@@ -75,4 +81,5 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
                     all_processed_events.extend(processed_events)
         return all_processed_events, None
     except Exception as e:
+        LOGGER.exception("Error on processor!")
         return all_processed_events, e
