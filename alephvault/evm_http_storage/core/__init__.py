@@ -31,7 +31,7 @@ def loop(gateway_url: str, events_settings: dict, client: MongoClient,
     """
 
     state_collection = client[cache_db][cache_state_collection]
-    state = state_collection.find_one({}) or {}
+    state = (state_collection.find_one({}) or {}).get('value', {})
     LOGGER.info(f"loop::Using state: {state} against gateway: {gateway_url}")
     events_list = grab_all_events_since(gateway_url, events_settings, state)
     LOGGER.info(f"loop::Processing events ({len(events_list)})")
