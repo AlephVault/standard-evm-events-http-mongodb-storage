@@ -1,6 +1,11 @@
+import logging
+
 from pymongo import MongoClient
 from .grabber import grab_all_events_since
 from .processor import process_full_events_list
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def loop(gateway_url: str, events_settings: dict, client: MongoClient,
@@ -26,5 +31,7 @@ def loop(gateway_url: str, events_settings: dict, client: MongoClient,
 
     state_collection = client[cache_db][cache_state_collection]
     state = state_collection.find_one({}) or {}
+    LOGGER.info(f"loop::Using state: {state} against gateway: {gateway_url}")
     events_list = grab_all_events_since(gateway_url, events_settings, state)
+    LOGGER.info(f"loop::Processing events ({len(events_list)})")
     return process_full_events_list(events_list, events_settings, client, state_collection, state)
