@@ -6,6 +6,7 @@ from .processor import process_full_events_list
 
 
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 
 def loop(gateway_url: str, events_settings: dict, client: MongoClient,
