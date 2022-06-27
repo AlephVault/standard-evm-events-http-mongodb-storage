@@ -51,15 +51,15 @@ def make_evm_resource(worker_settings: dict, db_name: str = 'evm',
     }
 
 
-def standard_evm_resource(worker_settings: dict, db_name: str = 'evm',
-                          state_collection_name: str = 'state',
-                          state_resource_name: str = "evm-state",
-                          erc20balance_collection_name: str = 'erc20-balance',
-                          erc20balance_resource_name: str = "evm-erc20-balance",
-                          erc721balance_collection_name: str = 'erc721-ownership',
-                          erc721balance_resource_name: str = "evm-erc721-ownership",
-                          erc1155balance_collection_name: str = 'erc1155-ownership',
-                          erc1155balance_resource_name: str = "evm-erc1155-ownership"):
+def make_standard_evm_resources(worker_settings: dict, db_name: str = 'evm',
+                                state_collection_name: str = 'state',
+                                state_resource_name: str = "evm-state",
+                                erc20balance_collection_name: str = 'erc20-balance',
+                                erc20balance_resource_name: str = "evm-erc20-balance",
+                                erc721balance_collection_name: str = 'erc721-ownership',
+                                erc721balance_resource_name: str = "evm-erc721-ownership",
+                                erc1155balance_collection_name: str = 'erc1155-ownership',
+                                erc1155balance_resource_name: str = "evm-erc1155-ownership"):
     """
     Makes a standard EVM resources set involving: The state table, the ERC-20
     cache table, the ERC-721 cache table, and the ERC-1155 cache table. Those
