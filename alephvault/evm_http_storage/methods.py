@@ -28,8 +28,8 @@ class EventGrabberWorker(MethodHandler):
         valid = validator.validate(grabber_settings)
         if not valid:
             raise ValueError(validator.errors)
-        self._events_settings = grabber_settings['events']
-        self._gateway_url = os.environ[self._events_settings['gateway_url_environment_var']]
+        self._events_settings = validator.document['events']
+        self._gateway_url = os.environ[validator.document['gateway_url_environment_var']]
 
     def __call__(self, client: MongoClient, resource: str, method: str, db: str, collection: str, filter: dict):
         """
