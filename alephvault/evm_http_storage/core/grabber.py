@@ -21,7 +21,7 @@ def grab_all_events_since(gateway_url: str, events_settings: dict, state: dict):
         )
         for event in event_filter.get_all_entries():
             entry = {**{
-               k: v for k, v in event.items() if k in {"blockNumber", "transactionIndex", "logIndex", "args"}
+               k: v for k, v in event.items() if k in {"blockNumber", "transactionIndex", "logIndex", "args", "event"}
             }, "eventKey": event_key}
             events_list.setdefault(entry["blockNumber"], []).append(entry)
     return events_list
