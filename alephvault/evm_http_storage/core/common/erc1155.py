@@ -105,6 +105,7 @@ class ERC1155BalanceHandler(EventHandler):
                 "amount": to_balance_str
             }, session=session, upsert=True)
             response["to_balance"] = to_balance_str
+        return response
 
     def _handle_transfer_batch(self, collection: Collection, session: ClientSession,
                                from_: str, to: str, ids: List[str], values: List[int]):
