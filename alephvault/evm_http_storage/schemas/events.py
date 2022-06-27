@@ -25,8 +25,8 @@ EVENT = {
             "allow_unknown": True,
             "schema": {
                 "name": {
+                    "dependencies": {"type": ["function", "fallback", "receive", "event"]},
                     "type": "string",
-                    "required": True,
                     "regex": "[a-zA-Z][a-zA-Z0-9_]+"
                 },
                 "type": {
