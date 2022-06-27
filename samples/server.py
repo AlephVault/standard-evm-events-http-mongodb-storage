@@ -1,9 +1,13 @@
+import logging
+
 from alephvault.http_storage.flask_app import StorageApp
 
 from alephvault.evm_http_storage.core.common.erc1155 import ERC1155BalanceHandler
 from alephvault.evm_http_storage.core.common.erc20 import ERC20BalanceHandler
 from alephvault.evm_http_storage.core.common.erc721 import ERC721BalanceHandler
 from alephvault.evm_http_storage.schemas.resources import make_standard_evm_resources
+
+logging.basicConfig()
 
 ERC1155 = "0x83fD6d68C21c5a646971F8a788f3992365321304"
 ERC721 = "0x0d938498e6C47DCc1c5a59Abc8aEf0eab7D115f4"
@@ -986,7 +990,7 @@ RESOURCES = make_standard_evm_resources({
             'abi': ERC1155ABI,
             'handler': ERC1155HANDLER
         },
-        'erc155-transfer-match': {
+        'erc155-transfer-batch': {
             'address': ERC1155,
             'event': 'TransferBatch',
             'abi': ERC1155ABI,
