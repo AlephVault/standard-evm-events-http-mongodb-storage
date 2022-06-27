@@ -46,7 +46,8 @@ class ERC721BalanceHandler(EventHandler):
         if not self._is_zero(to):
             collection.replace_one({
                 "contract-key": self._contract_key,
-                "owner": to
+                "owner": to,
+                "token": token_id
             }, {
                 "contract-key": self._contract_key,
                 "owner": to,
