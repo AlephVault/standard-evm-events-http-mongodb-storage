@@ -39,7 +39,7 @@ EVENT = {
     "event": {
         "type": "string",
         "required": True,
-        "regex": "[a-zA-Z][A-Z0-9_]+"
+        "regex": "[a-zA-Z][a-zA-Z0-9_]+"
     },
     "handler": {
         "type": "event-handler",
@@ -69,7 +69,7 @@ WORKER_SCHEMA = {
     "gateway_url_environment_var": {
         "type": "string",
         "required": True,
-        "regex": r"[a-zA-Z_][a-zA-Z0-9_]",  # The url itself will satisfy: r"https?://[\w_-]+(\.[\w_-]+)*(:\d+)/?"
+        "regex": r"[a-zA-Z_][a-zA-Z0-9_]+",  # The url itself will satisfy: r"https?://[\w_-]+(\.[\w_-]+)*(:\d+)/?"
         "default": "GATEWAY_URL"
     }
 }
