@@ -76,7 +76,7 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
                         processed_events.append(handler(client, session, event))
                     # Update and store the states.
                     state[event['eventKey']] = _tohex(blockNumber + 1)
-                    state_collection.replace_one({}, {"value": state}, session=session)
+                    state_collection.replace_one({}, {"value": state}, session=session, upsert=True)
                     # Update response.
                     all_processed_events.extend(processed_events)
         return all_processed_events, None
