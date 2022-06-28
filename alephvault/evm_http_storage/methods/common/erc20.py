@@ -60,5 +60,5 @@ class ERC20Balances(MethodHandler):
         if not validator.validate({**request.args}):
             return format_invalid(validator.errors)
         query = client[db][collection].find({**filter, "contract-key": validator.document["contract-key"]})
-        query = query.skip(int(validator.document["offset"])).limit(int(validator.document["offset"]))
+        query = query.skip(int(validator.document["offset"])).limit(int(validator.document["limit"]))
         return ok([{"owner": e.get("owner"), "amount": e.get("amount")} for e in query])

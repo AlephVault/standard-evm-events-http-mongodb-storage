@@ -1,3 +1,6 @@
+from alephvault.evm_http_storage.methods.common.erc721 import ERC20Collections, ERC20CollectionOf
+
+
 def make_evm_erc721_balance_resource(db_name: str = 'evm', erc721balance_collection_name: str = 'erc721-ownership',
                                      erc721balance_resource_name: str = "evm-erc721-ownership"):
     """
@@ -35,6 +38,16 @@ def make_evm_erc721_balance_resource(db_name: str = 'evm', erc721balance_collect
                 },
                 "owned-list": {
                     "fields": ["contract-key", "owner"]
+                }
+            },
+            "methods": {
+                "collections": {
+                    "type": "view",
+                    "handler": ERC20Collections()
+                },
+                "collection-of": {
+                    "type": "view",
+                    "handler": ERC20CollectionOf()
                 }
             }
         }
