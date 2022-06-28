@@ -1,3 +1,6 @@
+from alephvault.evm_http_storage.methods.common.erc1155 import ERC1155Balances, ERC1155BalancesOf, ERC1155BalanceOf
+
+
 def make_evm_erc1155_balance_resource(db_name: str = 'evm', erc1155balance_collection_name: str = 'erc1155-ownership',
                                       erc1155balance_resource_name: str = "evm-erc1155-ownership"):
     """
@@ -41,6 +44,20 @@ def make_evm_erc1155_balance_resource(db_name: str = 'evm', erc1155balance_colle
                 },
                 "owned-list": {
                     "fields": ["contract-key", "owner"]
+                }
+            },
+            "methods": {
+                "balances": {
+                    "type": "view",
+                    "handler": ERC1155Balances()
+                },
+                "balances-of": {
+                    "type": "view",
+                    "handler": ERC1155BalancesOf()
+                },
+                "balance-of": {
+                    "type": "view",
+                    "handler": ERC1155BalanceOf()
                 }
             }
         }
