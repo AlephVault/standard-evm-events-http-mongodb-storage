@@ -2,9 +2,9 @@ import logging
 
 from alephvault.http_storage.flask_app import StorageApp
 
-from alephvault.evm_http_storage.core.common.erc1155 import ERC1155BalanceHandler
-from alephvault.evm_http_storage.core.common.erc20 import ERC20BalanceHandler
-from alephvault.evm_http_storage.core.common.erc721 import ERC721BalanceHandler
+from alephvault.evm_http_storage.core.common.erc1155balance_handler import ERC1155BalanceHandler
+from alephvault.evm_http_storage.core.common.erc20balance_handler import ERC20BalanceHandler
+from alephvault.evm_http_storage.core.common.erc721balance_handler import ERC721BalanceHandler
 from alephvault.evm_http_storage.schemas.resources import make_standard_evm_resources
 
 logging.basicConfig()
