@@ -1,3 +1,6 @@
+from alephvault.evm_http_storage.methods.common.erc20 import ERC20Balances, ERC20BalanceOf
+
+
 def make_evm_erc20_balance_resource(db_name: str = 'evm', erc20balance_collection_name: str = 'erc20-balance',
                                     erc20balance_resource_name: str = "evm-erc20-balance"):
     """
@@ -34,6 +37,16 @@ def make_evm_erc20_balance_resource(db_name: str = 'evm', erc20balance_collectio
                     "unique": True,
                     "fields": ["contract-key", "owner"]
                 },
+            },
+            "methods": {
+                "balances": {
+                    "type": "view",
+                    "handler": ERC20Balances()
+                },
+                "balance-of": {
+                    "type": "view",
+                    "handler": ERC20BalanceOf()
+                }
             }
         }
     }
