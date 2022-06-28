@@ -45,11 +45,11 @@ class ERC1155Handler(ContractHandler):
         collection = client[self._db_name][self._erc1155balance_collection_name]
 
         if event_name == 'TransferSingle':
-            id_ = str(self._get_arg(args, 'id') or 0)
+            id_ = hex(self._get_arg(args, 'id') or 0)
             value = self._get_arg(args, 'value') or 0
             return self._handle_transfer_single(collection, session, from_, to, id_, value)
         elif event_name == 'TransferBatch':
-            ids_ = [str(k) for k in self._get_arg(args, 'ids') or []]
+            ids_ = [hex(k) for k in self._get_arg(args, 'ids') or []]
             values = self._get_arg(args, 'values') or []
             return self._handle_transfer_batch(collection, session, from_, to, ids_, values)
         else:

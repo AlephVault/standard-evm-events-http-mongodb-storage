@@ -35,7 +35,7 @@ class ERC721Handler(ContractHandler):
         args = event['args']
         from_ = self._get_arg(args, 'from')
         to = self._get_arg(args, 'to')
-        token_id = str(self._get_arg(args, 'tokenId') or 0)
+        token_id = hex(self._get_arg(args, 'tokenId') or 0)
         collection = client[self._db_name][self._erc721balance_collection_name]
 
         if event["event"] != "Transfer":
