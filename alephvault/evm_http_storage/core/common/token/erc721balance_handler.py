@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from web3.datastructures import AttributeDict
-from ..event_handler import EventHandler
+from ...event_handler import EventHandler
 
 
 class ERC721BalanceHandler(EventHandler):
