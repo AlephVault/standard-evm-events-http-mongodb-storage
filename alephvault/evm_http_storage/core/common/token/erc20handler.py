@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from pymongo.client_session import ClientSession
+from web3 import Web3
 from web3.datastructures import AttributeDict
 from .abi import ERC20ABI
 from ...contract_handler import ContractHandler
@@ -18,7 +19,7 @@ class ERC20Handler(ContractHandler):
         self._db_name = db_name
         self._erc20balance_collection_name = erc20balance_collection_name
 
-    def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict):
+    def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict, web3: Web3):
         """
         Intended to process event logs which come from a Transfer(address indexed, address indexed, uint256)
         event. The address 0x0 will not be taken into account (in the 1st argument means "mint", and in the
@@ -27,6 +28,7 @@ class ERC20Handler(ContractHandler):
         :param client: The MongoDB client to use.
         :param session: The current MongoDB session.
         :param event: The event being processed.
+        :param web3: The current Web3 client - not used here.
         :return: Whatever makes sense for the game.
         """
 

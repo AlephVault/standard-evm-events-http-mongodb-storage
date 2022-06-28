@@ -2,6 +2,7 @@ from typing import List
 from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from pymongo.collection import Collection
+from web3 import Web3
 from web3.datastructures import AttributeDict
 from .abi import ERC1155ABI
 from ...contract_handler import ContractHandler
@@ -22,7 +23,7 @@ class ERC1155Handler(ContractHandler):
         self._db_name = db_name
         self._erc1155balance_collection_name = erc1155balance_collection_name
 
-    def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict):
+    def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict, web3: Web3):
         """
         Intended to process logs which come from a TransferSingle(address indexed, address
         indexed, uint256 token, uint256 amount) and TransferBatch(address indexed, address
@@ -33,6 +34,7 @@ class ERC1155Handler(ContractHandler):
         :param client: The MongoDB client to use.
         :param session: The current MongoDB session.
         :param event: The event being processed.
+        :param web3: The current Web3 client - not used here.
         :return: A response that tells the cache updates and event details.
         """
 

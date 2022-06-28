@@ -36,4 +36,4 @@ def loop(gateway_url: str, contracts_settings: list, client: MongoClient,
     events_list = grab_all_events_since(gateway_url, contracts_settings, state)
     LOGGER.info(f"loop::Processing events ({len(events_list)})")
     return process_full_events_list(events_list, {cs['handler'].contract_key: cs for cs in contracts_settings},
-                                    client, state_collection, state)
+                                    client, state_collection, state, gateway_url)

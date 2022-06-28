@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from pymongo.client_session import ClientSession
+from web3 import Web3
 from web3.datastructures import AttributeDict
 
 
@@ -79,7 +80,7 @@ class ContractHandler:
 
         self._contract_key = contract_key
 
-    def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict):
+    def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict, web3: Web3):
         """
         Processes an event inside a transaction. That transaction exists in a session,
         which is turn belongs to the client, and the given event will be processed by
@@ -90,6 +91,7 @@ class ContractHandler:
         :param client: The MongoDB client to use.
         :param session: The current MongoDB session.
         :param event: The event being processed.
+        :param web3: The Web3 client to use (optional).
         :return: Whatever makes sense for the game.
         """
 

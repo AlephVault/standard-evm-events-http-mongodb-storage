@@ -2,7 +2,7 @@ import logging
 
 from pymongo import MongoClient
 from pymongo.collection import Collection
-
+from web3 import Web3, providers
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
@@ -20,7 +20,7 @@ def _tohex(value: int):
 
 
 def process_full_events_list(events_list: dict, contract_settings: dict, client: MongoClient,
-                             state_collection: Collection, state: dict):
+                             state_collection: Collection, state: dict, gateway_url: str):
     """
     Processes all the events in the incoming list. This is done according
     to a given current state (and state collection), its state collection
@@ -32,6 +32,7 @@ def process_full_events_list(events_list: dict, contract_settings: dict, client:
     :param state_collection: A collection, related to the client, into which
       the state will be saved.
     :param state: The current state, which is periodically updated and pushed.
+    :param gateway_url: The gateway url to create a web3 client.
     :return: The events that were effectively synchronized, and whether an exception
       occurred in the processing.
     """
@@ -39,6 +40,7 @@ def process_full_events_list(events_list: dict, contract_settings: dict, client:
     all_processed_events = []
 
     try:
+        web3 = Web3(providers.HTTPProvider(gateway_url))
         with client.start_session() as session:
             # Inside this session, all the events will be iterated.
             # The first iteration level, which will correspond to
@@ -73,14 +75,12 @@ def process_full_events_list(events_list: dict, contract_settings: dict, client:
                                     key=lambda evt: (evt['transactionIndex'], evt['logIndex']))
                     processed_events = []
                     for event in events:
-                        LOGGER.info(f"processing event: {event}")
                         handler = contract_settings[event['contract-key']]["handler"]
-                        response = handler(client, session, event)
+                        response = handler(client, session, event, web3)
                         if response is not None:
                             processed_events.append(response)
                     # Update and store the states.
                     state[event['event-state-key']] = _tohex(blockNumber + 1)
-                    LOGGER.info(f"Updating state: {event['event-state-key']} -> {state[event['event-state-key']]}")
                     state_collection.replace_one({}, {"value": state}, session=session, upsert=True)
                     # Update response.
                     all_processed_events.extend(processed_events)
