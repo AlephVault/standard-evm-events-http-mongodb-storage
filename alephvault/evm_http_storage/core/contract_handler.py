@@ -3,11 +3,12 @@ from pymongo.client_session import ClientSession
 from web3.datastructures import AttributeDict
 
 
-class EventHandler:
+class ContractHandler:
     """
-    A handler for a given event being received. It will take
-    into account 3 things when an event is received: a client,
-    a session (within that client), and an event to process.
+    A handler for a given contract's events being received.
+    It will take into account 3 things when an event is received:
+    a client, a session (within that client), and an event log
+    to process. It also knows which ABI to use.
     """
 
     def _is_zero(self, value):
@@ -45,6 +46,38 @@ class EventHandler:
             return args[key]
         else:
             return args.get("_" + key)
+
+    def get_abi(self):
+        """
+        Returns the ABI that this contract handler will use.
+        :return: The ABI, as a list.
+        """
+
+        raise NotImplementedError
+
+    def get_events(self):
+        """
+        The list of events supported by this contract handler's ABI.
+        :return: The list of events.
+        """
+
+        return [entry['name'] for entry in self.get_abi() if entry.get('type') == 'event']
+
+    @property
+    def contract_key(self):
+        """
+        The handler's contract key.
+        """
+
+        return self._contract_key
+
+    def __init__(self, contract_key: str):
+        """
+        Each handler will be initialized with a contract key.
+        :param contract_key: The handler's contract key.
+        """
+
+        self._contract_key = contract_key
 
     def __call__(self, client: MongoClient, session: ClientSession, event: AttributeDict):
         """

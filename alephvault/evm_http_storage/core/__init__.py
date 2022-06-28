@@ -9,7 +9,7 @@ LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
 
-def loop(gateway_url: str, events_settings: dict, client: MongoClient,
+def loop(gateway_url: str, contracts_settings: list, client: MongoClient,
          cache_db: str, cache_state_collection: str):
     """
     The whole work loop, including the state retrieval and the full
@@ -21,7 +21,7 @@ def loop(gateway_url: str, events_settings: dict, client: MongoClient,
       be consistently stored.
     :param gateway_url: The URL of the gateway to use (it must support
       event logs retrieval).
-    :param events_settings: The dictionary with the settings to use.
+    :param contracts_settings: The dictionary with the settings to use.
     :param client: A MongoDB client.
     :param cache_db: The db that will be related to this cache feature.
     :param cache_state_collection: The collection, inside the db
@@ -33,6 +33,7 @@ def loop(gateway_url: str, events_settings: dict, client: MongoClient,
     state_collection = client[cache_db][cache_state_collection]
     state = (state_collection.find_one({}) or {}).get('value', {})
     LOGGER.info(f"loop::Using state: {state} against gateway: {gateway_url}")
-    events_list = grab_all_events_since(gateway_url, events_settings, state)
+    events_list = grab_all_events_since(gateway_url, contracts_settings, state)
     LOGGER.info(f"loop::Processing events ({len(events_list)})")
-    return process_full_events_list(events_list, events_settings, client, state_collection, state)
+    return process_full_events_list(events_list, {cs['handler'].contract_key: cs for cs in contracts_settings},
+                                    client, state_collection, state)

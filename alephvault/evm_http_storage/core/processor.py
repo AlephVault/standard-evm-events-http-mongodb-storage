@@ -5,6 +5,7 @@ from pymongo.collection import Collection
 
 
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 
 def _tohex(value: int):
@@ -18,7 +19,7 @@ def _tohex(value: int):
     return "0x" + ("0" * max(0, 64 - len(h))) + h
 
 
-def process_full_events_list(events_list: dict, events_settings: dict, client: MongoClient,
+def process_full_events_list(events_list: dict, contract_settings: dict, client: MongoClient,
                              state_collection: Collection, state: dict):
     """
     Processes all the events in the incoming list. This is done according
@@ -26,7 +27,7 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
     (to update it appropriately), and a given client to be used into the
     specific event handlers.
     :param events_list: The list of events to process. This is actually a dictionary.
-    :param events_settings: A dictionary with the per-event settings.
+    :param contract_settings: A dictionary with the per-event settings.
     :param client: A MongoDB client.
     :param state_collection: A collection, related to the client, into which
       the state will be saved.
@@ -72,10 +73,14 @@ def process_full_events_list(events_list: dict, events_settings: dict, client: M
                                     key=lambda evt: (evt['transactionIndex'], evt['logIndex']))
                     processed_events = []
                     for event in events:
-                        handler = events_settings[event['eventKey']]["handler"]
-                        processed_events.append(handler(client, session, event))
+                        LOGGER.info(f"processing event: {event}")
+                        handler = contract_settings[event['contract-key']]["handler"]
+                        response = handler(client, session, event)
+                        if response is not None:
+                            processed_events.append(response)
                     # Update and store the states.
-                    state[event['eventKey']] = _tohex(blockNumber + 1)
+                    state[event['event-state-key']] = _tohex(blockNumber + 1)
+                    LOGGER.info(f"Updating state: {event['event-state-key']} -> {state[event['event-state-key']]}")
                     state_collection.replace_one({}, {"value": state}, session=session, upsert=True)
                     # Update response.
                     all_processed_events.extend(processed_events)

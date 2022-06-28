@@ -1,17 +1,21 @@
 from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from web3.datastructures import AttributeDict
-from ...event_handler import EventHandler
+from .abi import ERC721ABI
+from ...contract_handler import ContractHandler
 
 
-class ERC721BalanceHandler(EventHandler):
+class ERC721Handler(ContractHandler):
     """
     An ERC-721 balance handler uses the events to maintain the ownership of the tokens.
     """
 
+    def get_abi(self):
+        return ERC721ABI
+
     def __init__(self, contract_key: str, db_name: str = 'evm',
                  erc721balance_collection_name: str = 'erc721-ownership'):
-        self._contract_key = contract_key
+        super().__init__(contract_key)
         self._db_name = db_name
         self._erc721balance_collection_name = erc721balance_collection_name
 

@@ -3,18 +3,22 @@ from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from pymongo.collection import Collection
 from web3.datastructures import AttributeDict
-from ...event_handler import EventHandler
+from .abi import ERC1155ABI
+from ...contract_handler import ContractHandler
 
 
-class ERC1155BalanceHandler(EventHandler):
+class ERC1155Handler(ContractHandler):
     """
     An ERC-1155 balance handler uses the events to maintain the balances of all the tokens
     in the contract.
     """
 
+    def get_abi(self):
+        return ERC1155ABI
+
     def __init__(self, contract_key: str, db_name: str = 'evm',
                  erc1155balance_collection_name: str = 'erc1155-ownership'):
-        self._contract_key = contract_key
+        super().__init__(contract_key)
         self._db_name = db_name
         self._erc1155balance_collection_name = erc1155balance_collection_name
 

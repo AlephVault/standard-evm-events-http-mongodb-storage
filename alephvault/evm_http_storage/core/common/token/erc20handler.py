@@ -1,16 +1,20 @@
 from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from web3.datastructures import AttributeDict
-from ...event_handler import EventHandler
+from .abi import ERC20ABI
+from ...contract_handler import ContractHandler
 
 
-class ERC20BalanceHandler(EventHandler):
+class ERC20Handler(ContractHandler):
     """
     An ERC-20 balance handler uses the events to maintain the balance cache.
     """
 
+    def get_abi(self):
+        return ERC20ABI
+
     def __init__(self, contract_key: str, db_name: str = 'evm', erc20balance_collection_name: str = 'erc20-balance'):
-        self._contract_key = contract_key
+        super().__init__(contract_key)
         self._db_name = db_name
         self._erc20balance_collection_name = erc20balance_collection_name
 
