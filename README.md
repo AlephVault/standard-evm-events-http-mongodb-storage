@@ -1,2 +1,2 @@
 # standard-evm-events-http-mongodb-storage
-A standard HTTP storage implementation for EVM events from perhaps different smart contracts and perhaps different event types.
+A trait to implement a standard mongodb server which logs events and also caches some data related to them.
