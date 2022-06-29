@@ -1,8 +1,10 @@
-from alephvault.evm_http_storage.methods.common.erc1155 import ERC1155Balances, ERC1155BalancesOf, ERC1155BalanceOf
+from alephvault.evm_http_storage.methods.common.erc1155 import ERC1155Balances, ERC1155BalancesOf, ERC1155BalanceOf, \
+    ERC1155Reset
 
 
 def make_evm_erc1155_balance_resource(db_name: str = 'evm', erc1155balance_collection_name: str = 'erc1155-ownership',
-                                      erc1155balance_resource_name: str = "evm-erc1155-ownership"):
+                                      erc1155balance_resource_name: str = "evm-erc1155-ownership",
+                                      state_db_name: str = 'evm', state_collection_name: str = 'state'):
     """
     Makes an EVM resource to track token ownerships of an ERC-1155 smart contract.
     :return: A dictionary with the resource configuration.
@@ -58,6 +60,10 @@ def make_evm_erc1155_balance_resource(db_name: str = 'evm', erc1155balance_colle
                 "balance-of": {
                     "type": "view",
                     "handler": ERC1155BalanceOf()
+                },
+                "reset-cache": {
+                    "type": "operation",
+                    "handler": ERC1155Reset(state_db_name, state_collection_name)
                 }
             }
         }

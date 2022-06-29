@@ -1,8 +1,9 @@
-from alephvault.evm_http_storage.methods.common.erc721 import ERC20Collections, ERC20CollectionOf
+from alephvault.evm_http_storage.methods.common.erc721 import ERC721Collections, ERC721CollectionOf, ERC721Reset
 
 
 def make_evm_erc721_balance_resource(db_name: str = 'evm', erc721balance_collection_name: str = 'erc721-ownership',
-                                     erc721balance_resource_name: str = "evm-erc721-ownership"):
+                                     erc721balance_resource_name: str = "evm-erc721-ownership",
+                                     state_db_name: str = 'evm', state_collection_name: str = 'state'):
     """
     Makes an EVM resource to track token ownerships of an ERC-721 smart contract.
     :return: A dictionary with the resource configuration.
@@ -43,11 +44,15 @@ def make_evm_erc721_balance_resource(db_name: str = 'evm', erc721balance_collect
             "methods": {
                 "collections": {
                     "type": "view",
-                    "handler": ERC20Collections()
+                    "handler": ERC721Collections()
                 },
                 "collection-of": {
                     "type": "view",
-                    "handler": ERC20CollectionOf()
+                    "handler": ERC721CollectionOf()
+                },
+                "reset-cache": {
+                    "type": "operation",
+                    "handler": ERC721Reset(state_db_name, state_collection_name)
                 }
             }
         }

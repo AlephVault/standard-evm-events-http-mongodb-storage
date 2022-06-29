@@ -5,7 +5,7 @@ from alephvault.http_storage.types.method_handlers import MethodHandler
 from pymongo import MongoClient
 
 
-class ERC20CollectionOf(MethodHandler):
+class ERC721CollectionOf(MethodHandler):
     """
     Gets the assets of an account in an ERC-721 contract, by paging.
     """
@@ -44,7 +44,7 @@ class ERC20CollectionOf(MethodHandler):
         return ok([e.get("token") for e in query])
 
 
-class ERC20Collections(MethodHandler):
+class ERC721Collections(MethodHandler):
     """
     Gets all the assets and owners in an ERC-721 contract, by paging.
     """
@@ -75,3 +75,33 @@ class ERC20Collections(MethodHandler):
         query = client[db][collection].find({**filter, "contract-key": validator.document["contract-key"]})
         query = query.skip(int(validator.document["offset"])).limit(int(validator.document["limit"]))
         return ok([{"token": e.get("token"), "owner": e.get("owner")} for e in query])
+
+
+class ERC721Reset(MethodHandler):
+    """
+    Resets the state for certain event(s) of an ERC721 contract.
+    """
+
+    SCHEMA = {
+        "contract-key": {
+            "type": "string",
+            "required": True
+        }
+    }
+
+    def __init__(self, state_db_name: str, state_collection_name: str):
+        self._state_db_name = state_db_name
+        self._state_collection_name = state_collection_name
+
+    def __call__(self, client: MongoClient, resource: str, method: str, db: str, collection: str, filter: dict):
+        validator = Validator(self.SCHEMA)
+        if not validator.validate({**request.args}):
+            return format_invalid(validator.errors)
+        contract_key = validator.document["contract-key"]
+        state_collection = client[self._state_db_name][self._state_collection_name]
+        cache_collection = client[db][collection]
+        cache_collection.delete_many({"contract-key": contract_key})
+        state = (state_collection.find_one({}) or {}).get("value", {})
+        state.pop(f"{contract_key}:Transfer", None)
+        state_collection.replace_one({}, {"value": state}, upsert=True)
+        return ok()

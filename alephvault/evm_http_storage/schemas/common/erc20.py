@@ -1,8 +1,9 @@
-from alephvault.evm_http_storage.methods.common.erc20 import ERC20Balances, ERC20BalanceOf
+from alephvault.evm_http_storage.methods.common.erc20 import ERC20Balances, ERC20BalanceOf, ERC20Reset
 
 
 def make_evm_erc20_balance_resource(db_name: str = 'evm', erc20balance_collection_name: str = 'erc20-balance',
-                                    erc20balance_resource_name: str = "evm-erc20-balance"):
+                                    erc20balance_resource_name: str = "evm-erc20-balance",
+                                    state_db_name: str = 'evm', state_collection_name: str = 'state'):
     """
     Makes an EVM resource to track balances of an ERC-20 smart contract.
     :return: A dictionary with the resource configuration.
@@ -46,6 +47,10 @@ def make_evm_erc20_balance_resource(db_name: str = 'evm', erc20balance_collectio
                 "balance-of": {
                     "type": "view",
                     "handler": ERC20BalanceOf()
+                },
+                "reset-cache": {
+                    "type": "operation",
+                    "handler": ERC20Reset(state_db_name, state_collection_name)
                 }
             }
         }
