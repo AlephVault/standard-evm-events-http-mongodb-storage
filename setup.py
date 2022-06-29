@@ -12,6 +12,6 @@ setup(
                 'also caches some data related to them',
     install_requires=[
         'alephvault-http-mongodb-storage==0.0.8',
-        'dnspython==2.2.1'
+        'dnspython==2.2.1',
     ]
 )
