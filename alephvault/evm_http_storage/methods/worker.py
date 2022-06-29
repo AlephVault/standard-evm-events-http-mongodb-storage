@@ -2,6 +2,7 @@ import os
 import logging
 from flask import jsonify
 from alephvault.evm_http_storage.core import loop
+from alephvault.evm_http_storage.core.decorators import uses_lock
 from alephvault.evm_http_storage.schemas.contracts import WORKER_SCHEMA
 from alephvault.evm_http_storage.validation import WorkerSettingsValidator
 from alephvault.http_storage.types.method_handlers import MethodHandler
@@ -34,6 +35,7 @@ class EventGrabberWorker(MethodHandler):
             raise ValueError({"contracts": ['repeated contract keys across contract handlers is not allowed']})
         self._gateway_url = os.environ[validator.document['gateway_url_environment_var']]
 
+    @uses_lock
     def __call__(self, client: MongoClient, resource: str, method: str, db: str, collection: str, filter: dict):
         """
         Processes a request to get the last events and process them.

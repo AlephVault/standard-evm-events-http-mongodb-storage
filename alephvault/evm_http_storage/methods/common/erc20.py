@@ -1,8 +1,9 @@
 from flask import request
 from cerberus import Validator
+from pymongo import MongoClient
 from alephvault.http_storage.core.responses import format_invalid, ok
 from alephvault.http_storage.types.method_handlers import MethodHandler
-from pymongo import MongoClient
+from alephvault.evm_http_storage.core.decorators import uses_lock
 
 
 class ERC20BalanceOf(MethodHandler):
@@ -22,6 +23,7 @@ class ERC20BalanceOf(MethodHandler):
         }
     }
 
+    @uses_lock
     def __call__(self, client: MongoClient, resource: str, method: str, db: str, collection: str, filter: dict):
         validator = Validator(self.SCHEMA)
         if not validator.validate(request.args):
@@ -55,6 +57,7 @@ class ERC20Balances(MethodHandler):
         }
     }
 
+    @uses_lock
     def __call__(self, client: MongoClient, resource: str, method: str, db: str, collection: str, filter: dict):
         validator = Validator(self.SCHEMA)
         if not validator.validate({**request.args}):
@@ -80,6 +83,7 @@ class ERC20Reset(MethodHandler):
         self._state_db_name = state_db_name
         self._state_collection_name = state_collection_name
 
+    @uses_lock
     def __call__(self, client: MongoClient, resource: str, method: str, db: str, collection: str, filter: dict):
         validator = Validator(self.SCHEMA)
         if not validator.validate({**request.args}):

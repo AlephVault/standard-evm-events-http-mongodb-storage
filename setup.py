@@ -13,5 +13,6 @@ setup(
     install_requires=[
         'alephvault-http-mongodb-storage==0.0.8',
         'dnspython==2.2.1',
+        'ilock==1.0.3'
     ]
 )
