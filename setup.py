@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name='alephvault-evm-events-http-mongodb-storage',
-    version='0.0.1',
+    version='0.0.2',
     packages=find_namespace_packages(),
     url='https://github.com/AlephVault/standard-evm-events-http-mongodb-storage',
     license='MIT',
