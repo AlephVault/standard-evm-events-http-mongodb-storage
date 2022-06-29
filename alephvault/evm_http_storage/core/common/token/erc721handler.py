@@ -14,6 +14,9 @@ class ERC721Handler(ContractHandler):
     def get_abi(self):
         return ERC721ABI
 
+    def get_events(self):
+        return ["Transfer"]
+
     def __init__(self, contract_key: str, db_name: str = 'evm',
                  erc721balance_collection_name: str = 'erc721-ownership'):
         super().__init__(contract_key)

@@ -62,7 +62,10 @@ class ContractHandler:
         :return: The list of events.
         """
 
-        return [entry['name'] for entry in self.get_abi() if entry.get('type') == 'event']
+        # If we happen to be interested in all the events
+        # we could instead uncomment the next line:
+        # return [entry['name'] for entry in self.get_abi() if entry.get('type') == 'event']
+        raise NotImplementedError
 
     @property
     def contract_key(self):
