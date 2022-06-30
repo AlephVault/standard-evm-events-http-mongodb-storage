@@ -43,7 +43,7 @@ class ERC721CollectionOf(MethodHandler):
         query = client[db][collection].find({**filter, "contract-key": validator.document["contract-key"],
                                              "owner": validator.document["owner"]})
         query = query.skip(int(validator.document["offset"])).limit(int(validator.document["limit"]))
-        return ok([e.get("token") for e in query])
+        return ok([{"token": e.get("token")} for e in query])
 
 
 class ERC721Collections(MethodHandler):
